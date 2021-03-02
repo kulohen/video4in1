@@ -18,5 +18,11 @@ def run4in1(target_ad , result_ad):
 
     final_clip.write_videofile(result_ad) # Many options...
 
+def run4in1_thread(target_ads , result_ads ):
+    for i, exec_file in enumerate(result_ads):
+        run4in1(target_ads[i], exec_file)
+        print(i+1,"/",len(result_ads)," 完成！")
+
+
 if __name__ == '__main__':
     run4in1("myHolidays.mp4", "hebing3.mp4")

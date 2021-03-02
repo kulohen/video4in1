@@ -22,6 +22,7 @@ class Stream(QObject):
 
     def write(self, text):
         self.newText.emit(str(text))
+        QApplication.processEvents()
 
 class login(QWidget):
     def __init__(self):
@@ -106,7 +107,6 @@ class login(QWidget):
             target2 = ''.join(target_list)
             # self.target_le.setText(str(target2))
             self.save_file_names.append(target2)
-        print(self.save_file_names)
     # 保存的视频文件名称，要写上后缀名
     def select_target(self):
         # target, fileType = QFileDialog.getSaveFileName(self, "选择保存路径", "C:/Users/29125/PycharmProjects/video4in1")
@@ -118,30 +118,11 @@ class login(QWidget):
         print('执行操作的文件数量：',len(self.save_file_names))
         target = self.target_le.text().strip()  # 获取剪切后视频保存的文件夹
 
-        if self.is_running ==0:
-            self.t1 = multiprocessing.Process(target=run4in1_thread,
-                                              args=(self.targets, self.save_file_names))
-            # self.progressBar.setValue(i / len(result_ads) * 100)
-            self.t1.is_alive()
-            self.t1.start()
-            self.is_running = 1
-            self.save_btn.setText("中止")
-
-        else:
-            self.t1.terminate()
-            self.is_running = 0
-            self.save_btn.setText("开始")
-        # run4in1(source , target)
-
-        # start_time = self.start_le.text().strip()  # 获取开始剪切时间
-        # stop_time = self.stop_le.text().strip()  # 获取剪切的结束时间
-        # video = VideoFileClip(source)  # 视频文件加载
-        # video = video.subclip(int(start_time), int(stop_time))  # 执行剪切操作
-        # video.to_videofile(target, fps=20, remove_temp=True)  # 输出文件
-        # self.result_le.setText("ok!")  # 输出文件后界面返回OK
-        # self.result_le.setStyleSheet("color:red;font-size:40px")  # 设置OK颜色为红色，大小为四十像素
-        # self.result_le.setAlignment(Qt.AlignCenter)  # OK在指定框内居中
-
+        for i, exec_file in enumerate(self.save_file_names):
+            QApplication.processEvents()
+            run4in1(self.targets[i], exec_file)
+            print(i + 1, "/", len(self.save_file_names), " 完成！")
+            self.progressBar.setValue((i+1) / len(self.save_file_names) * 100)
 
 
 if __name__ == "__main__":
