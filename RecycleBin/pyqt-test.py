@@ -1,8 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow,QDialog
-import rqrqr  # module test.py
+from PyQt5.QtWidgets import QApplication, QDialog
+from RecycleBin import rqrqr
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
